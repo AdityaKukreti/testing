@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
-import 'device.dart'; // This contains the ChatPage definition
+import 'device.dart';
+import 'led.dart';
 
 class SelectBondedDevicePage extends StatefulWidget {
   final bool checkAvailability;
@@ -38,7 +39,15 @@ class _SelectBondedDevicePageState extends State<SelectBondedDevicePage> {
         itemBuilder: (context, index) {
           return BluetoothDeviceListEntry(
             device: devices[index],
-            onTap: () => widget.onChatPage(devices[index]),
+            onTap: () {
+              // Ensure the correct context is used by wrapping the navigation logic in a Builder
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChatPage(server: devices[index]),
+                ),
+              );
+            },
           );
         },
       ),
